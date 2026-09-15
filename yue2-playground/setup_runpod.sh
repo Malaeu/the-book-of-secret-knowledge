@@ -23,6 +23,14 @@ if ! command -v nvidia-smi >/dev/null; then
   echo "nvidia-smi not found: this is not a GPU pod." >&2; exit 1
 fi
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
+DRIVER=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader | head -1)
+GPU_NAME=$(nvidia-smi --query-gpu=name --format=csv,noheader | head -1)
+echo "driver $DRIVER"
+# Blackwell (RTX 5090 / PRO 6000) needs driver >= 570 (CUDA 12.8). Fail fast, before downloading 13 GB.
+if [[ "$GPU_NAME" == *5090* || "$GPU_NAME" == *"PRO 6000"* ]] && (( ${DRIVER%%.*} < 570 )); then
+  echo "ERROR: $GPU_NAME with host driver $DRIVER (<570). This pod cannot run Blackwell CUDA kernels; recreate the pod in another DC." >&2
+  exit 1
+fi
 VRAM_MIB=$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits | head -1)
 if (( VRAM_MIB < 23000 )); then
   echo "WARNING: <24 GB VRAM. YuE2 officially wants 24 GB. play.sh will pass --budget/--offload-ar, expect it to be slower or to OOM." >&2
