@@ -1,0 +1,7 @@
+outputs/
+models/
+YuE/
+.venv*
+*.flac
+*.wav
+*.npy
