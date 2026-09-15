@@ -1,0 +1,7 @@
+{
+  "id": "cover",
+  "style": "English, acoustic folk cover, intimate male vocal, fingerpicked guitar, soft upright bass, no drums, 80 BPM",
+  "lyrics": "[Verse]\n(paste the original or new lyrics here, one line per sung phrase)\n\n[Chorus]\n(chorus lines)",
+  "cot": "melody",
+  "seed": 1
+}
