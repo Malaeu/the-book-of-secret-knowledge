@@ -28,7 +28,7 @@ mkdir -p "$MODELS"
 
 log "torch 2.8.0 (cu126) + SheetSage2 requirements"
 uv pip install --python "$VENV/bin/python" torch==2.8.0 torchaudio==2.8.0 \
-  --index-url https://download.pytorch.org/whl/cu126
+  --index-url https://download.pytorch.org/whl/cu128   # cu128, not cu126 from the docs: cu126 has no Blackwell (RTX 5090) kernels
 uv pip install --python "$VENV/bin/python" -r "$MODELS/SheetSage2/requirements.txt"
 
 log "Smoke test: import + melody_only support"
